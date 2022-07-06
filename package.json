@@ -5,17 +5,21 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start" : "node index.js",
-    "backend" : "nodemon index.js"
+    "start": "node index.js",
+    "backend": "nodemon index.js"
   },
   "author": "juurom",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.20.0",
+    "cookie-parser": "^1.4.6",
     "express": "^4.18.1",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.4.2"
   },
   "devDependencies": {
+    "kill-port": "^2.0.1",
     "nodemon": "^2.0.19"
   }
 }
