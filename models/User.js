@@ -1,11 +1,7 @@
 //왜 자꾸 뜨는지는 잘 모르겠지만
 //Error: listen EADDRINUSE: address already in use :::5000
 //이 에러가 뜨면 이미 5000port가 실행중이라 또 실행시킬 수 없다는 뜻이다
-//해결방법은 windows cmd창에서 프로세스를 강제종료시켜주면 된다.
-//(1) netstat -ano | findstr :5000
-//>>> TCP (~~~~) LISTENING (*PID num*)
-//(2) taskkill /PID (*PID num*) /F
-//>>> 성공: 프로세스가 종료되었습니다.
+//해결방법으로 kill-port를 다운받았다
 
 const mongoose = require('mongoose') //mongoose 모듈 가져오기
 const bcrypt = require('bcrypt') //bcrypt 모듈 가져오기
@@ -34,7 +30,7 @@ const userSchema = mongoose.Schema({ //mongoose로 스키마 만들기
         type: String,
     },
     tokenExp: {
-        type: Number,
+        type: Number, 
     }
 })
 
@@ -81,6 +77,17 @@ userSchema.methods.generateToken = function(cb){
     })
     //user._id + 'secretToken' = token
     //token을 통해 user._id를 찾아낼 수 있음
+}
+
+userSchema.statics.findByToken = function(token, cb){
+    let user = this;
+    //user._id + '' = token; secretToke을 통해 복호화
+    jwt.verify(token, 'secretToken', function(err, decoded){
+        user.findOne({"_id": decoded, "token": token}, function(err, user){
+            if (err) return cb(err);
+            cb(null, user);
+        })
+    })
 }
 
 const User = mongoose.model('User', userSchema) //모델에 만든 스키마 넣기
