@@ -31,7 +31,10 @@ mongoose.connect(config.mongoURI)
 .then(()=>console.log('Mongodb connected...'))
 .catch(err=>console.log(err))
 
-
+app.get('/api/hello', (req, res)=>{
+    //여기서 작업을 수행하고 마지막으로 res.send(결과)
+    res.send('hihihihi');
+})
 app.get('/', (req, res)=>res.send('Hello world hihihi')) //현재 디렉토리에서 hello world 출력하기
 
 
